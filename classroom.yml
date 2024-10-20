@@ -1,0 +1,164 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Test One Validate Sunny works (8)
+      id: test-one-validate-sunny-works-8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test One Validate Sunny works (8)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: Sunny
+        expected-output: It's sunny. Enjoy the sunshine!
+        comparison-method: contains
+        timeout: 1
+        max-score: 8
+    - name: Test Two Validate Cloudy works (8)
+      id: test-two-validate-cloudy-works-8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Two Validate Cloudy works (8)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: Cloudy
+        expected-output: It's cloudy. It might stay dry, but be prepared for changes.
+        comparison-method: contains
+        timeout: 1
+        max-score: 8
+    - name: Test Three Validate Rainy works (8)
+      id: test-three-validate-rainy-works-8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Three Validate Rainy works (8)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: Rainy
+        expected-output: It's rainy. You might want to carry an umbrella with you.
+        comparison-method: contains
+        timeout: 1
+        max-score: 8
+    - name: Test Four Validate Snowy works (8)
+      id: test-four-validate-snowy-works-8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Four Validate Snowy works (8)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: Rainy
+        expected-output: It's rainy. You might want to carry an umbrella with you.
+        comparison-method: contains
+        timeout: 1
+        max-score: 8
+    - name: Test Five Validate Not recognised (8)
+      id: test-five-validate-not-recognised-8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Five Validate Not recognised (8)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: 'cjnhaksdnh '
+        expected-output: I'm sorry, I don't have a specific recommendation
+        comparison-method: contains
+        timeout: 1
+        max-score: 8
+    - name: Test Six Validate Capitalisation Handling (10)
+      id: test-six-validate-capitalisation-handling-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Six Validate Capitalisation Handling (10)
+        setup-command: ''
+        command: python3 WeatherConditionChecker.py
+        input: snowy
+        expected-output: It's snowy. Be cautious while driving and dress warmly.
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Test One Validate Leap Year 1 (10)
+      id: test-one-validate-leap-year-1-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test One Validate Leap Year 1 (10)
+        setup-command: ''
+        command: python3 LeapYearChecker.py
+        input: '1992'
+        expected-output: 1992 is a leap year.
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Test Two Validate Leap Year 2 (10)
+      id: test-two-validate-leap-year-2-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Two Validate Leap Year 2 (10)
+        setup-command: ''
+        command: python3 LeapYearChecker.py
+        input: '1996'
+        expected-output: 1996 is a leap year.
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Test Three Validate Leap Year 3 (10)
+      id: test-three-validate-leap-year-3-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Three Validate Leap Year 3 (10)
+        setup-command: ''
+        command: python3 LeapYearChecker.py
+        input: '1583'
+        expected-output: 1583 is not a leap year.
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Test Four Validate Leap Year 4 (10)
+      id: test-four-validate-leap-year-4-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Four Validate Leap Year 4 (10)
+        setup-command: ''
+        command: python3 LeapYearChecker.py
+        input: '2001'
+        expected-output: '2001 is not a leap year. '
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Test Five Validate Gregorian Calendar (10)
+      id: test-five-validate-gregorian-calendar-10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Test Five Validate Gregorian Calendar (10)
+        setup-command: ''
+        command: python3 LeapYearChecker.py
+        input: '266'
+        expected-output: Year must be greater than 1582 - the first year of Gregorian
+          calendar.
+        comparison-method: contains
+        timeout: 1
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-ONE-VALIDATE-SUNNY-WORKS-8_RESULTS: "${{steps.test-one-validate-sunny-works-8.outputs.result}}"
+        TEST-TWO-VALIDATE-CLOUDY-WORKS-8_RESULTS: "${{steps.test-two-validate-cloudy-works-8.outputs.result}}"
+        TEST-THREE-VALIDATE-RAINY-WORKS-8_RESULTS: "${{steps.test-three-validate-rainy-works-8.outputs.result}}"
+        TEST-FOUR-VALIDATE-SNOWY-WORKS-8_RESULTS: "${{steps.test-four-validate-snowy-works-8.outputs.result}}"
+        TEST-FIVE-VALIDATE-NOT-RECOGNISED-8_RESULTS: "${{steps.test-five-validate-not-recognised-8.outputs.result}}"
+        TEST-SIX-VALIDATE-CAPITALISATION-HANDLING-10_RESULTS: "${{steps.test-six-validate-capitalisation-handling-10.outputs.result}}"
+        TEST-ONE-VALIDATE-LEAP-YEAR-1-10_RESULTS: "${{steps.test-one-validate-leap-year-1-10.outputs.result}}"
+        TEST-TWO-VALIDATE-LEAP-YEAR-2-10_RESULTS: "${{steps.test-two-validate-leap-year-2-10.outputs.result}}"
+        TEST-THREE-VALIDATE-LEAP-YEAR-3-10_RESULTS: "${{steps.test-three-validate-leap-year-3-10.outputs.result}}"
+        TEST-FOUR-VALIDATE-LEAP-YEAR-4-10_RESULTS: "${{steps.test-four-validate-leap-year-4-10.outputs.result}}"
+        TEST-FIVE-VALIDATE-GREGORIAN-CALENDAR-10_RESULTS: "${{steps.test-five-validate-gregorian-calendar-10.outputs.result}}"
+      with:
+        runners: test-one-validate-sunny-works-8,test-two-validate-cloudy-works-8,test-three-validate-rainy-works-8,test-four-validate-snowy-works-8,test-five-validate-not-recognised-8,test-six-validate-capitalisation-handling-10,test-one-validate-leap-year-1-10,test-two-validate-leap-year-2-10,test-three-validate-leap-year-3-10,test-four-validate-leap-year-4-10,test-five-validate-gregorian-calendar-10
